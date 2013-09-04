@@ -8,5 +8,5 @@ sub novo
 	return bless $self, $class;
 }
 
-#sub executa{}
+sub executa{}
 1;

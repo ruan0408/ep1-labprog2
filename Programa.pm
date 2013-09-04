@@ -17,7 +17,7 @@ sub novo
 sub insereComando
 {
   $self = shift;
-  $self->{posi} = $self->posi+1;
+  $self->{posi} = $self->{posi}+1;
   $vetor = $self->{vetor};
   push(@$vetor,shift);
 }
