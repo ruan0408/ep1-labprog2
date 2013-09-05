@@ -4,7 +4,7 @@ use Comando;
 use Programa;	
 use Maquina;
 package main;
-
+			
 $maq = novo Maquina;
 $prog = novo Programa;
 

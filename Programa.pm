@@ -24,15 +24,11 @@ sub interpretaLinha
 
   #$linha =~ s/\#.*//; #Elimina comentários
 
-
-
   if($linha !~ /([a-zA-Z]+[a-zA-Z0-9]*\:)?(([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z])/)
   #if(!/([a-zA-Z]+:)?(([a-zA-Z])+([0-9]+|[a-zA-Z]+)?)?/)
     {print "Syntax error\n"}
   else
   {
-
-
     if($1)
     {
       my $rotulo = $1;
@@ -40,7 +36,6 @@ sub interpretaLinha
 
       print "ACHEI ROTULO\n";
       
-
       if(!$self->existeLabel($rotulo))
       {
         $self->novoLabel($rotulo);
@@ -64,7 +59,6 @@ sub interpretaLinha
       $cmd = novo Comando($5, undef);
     }
     $self->insereComando($cmd); 
-    
   }
 
   return $self; #Recomendado.
@@ -73,13 +67,13 @@ sub interpretaLinha
 sub insereComando
 {
   $self = shift;
-  $self->{posi} = $self->{posi}+1;
+  $self->{posi}++;
+  #$self->{posi} = $self->{posi}+1;
   $vetor = $self->{vetor};
   push(@$vetor,shift);
 
   return $self
 }
-
 
 sub existeLabel
 {
@@ -89,9 +83,7 @@ sub existeLabel
 
   return 1 if($labelsHash->{$label} != undef );
   return 0;
-
 }
-
 
 sub novoLabel
 {
@@ -103,6 +95,18 @@ sub novoLabel
   $labelsHash->{$label} = $nLinha;
 
   return $self;
+}
+
+sub getPosi
+{
+  my $self = shift;
+  return $$self{posi};
+}
+
+sub getCmd
+{
+  (my $self, my $ind) = (@_);
+  return $$self{vetor}[$ind];
 }
 #pog->novoComando(objComando);
 1;
