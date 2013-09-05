@@ -108,5 +108,13 @@ sub getCmd
   (my $self, my $ind) = (@_);
   return $$self{vetor}[$ind];
 }
+
+sub getValorHash
+{
+  (my $self, my $keyPossible) = (@_);
+  return $self->{label}{$keyPossible};
+  #tenho duvidas se caso nao existir,
+  #ele retorna undef, ou nao retorna nada e cria com valor undef
+}
 #pog->novoComando(objComando);
 1;

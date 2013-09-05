@@ -15,12 +15,12 @@ sub novo
 sub getCode
 {
 	my $self = shift;
-	return $$self{opcode};
+	return $self->{opcode};
 }
 
 sub getValor
 {
 	my $self = shift;
-	return $$self{valor};
+	return $self->{valor};
 }
 1;	

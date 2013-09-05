@@ -1,4 +1,4 @@
-#! usrbinperl -w
+#! usr/bin/perl -w
 package Maquina;
 
 sub novo
@@ -33,6 +33,19 @@ sub lookDados #consulta o topo da pilha de dados
 	return $$maq->{dados}[$tam-1];
 }
 
+sub setMem 
+{
+	(my $maq, my $dado, my $i) = (@_);
+	$maq->{mem}[$i] = $dado;
+	return $maq;#recomendado?
+}
+
+sub getMem 
+{
+	(my $maq, my $i) = (@_);
+	return $maq->{mem}[$i];
+}
+
 sub executa
 {
 	(my $maq, my $prog) = (@_);
@@ -48,103 +61,151 @@ sub executa
 
 sub executaCmd#funcao bolada que vai terminar o ep
 {
-	(my $self, my $prog, my $cmd) = (@_);
+	(my $maq, my $prog, my $cmd) = (@_);
 	my $code = uc($cmd->getCode);
 	my $valor = $cmd->getValor;# permitiremos ROTULO e rotulo, serem labels diferentes?
 	my $a, my $b;
+	my $novoIndice;
 
 	if($code eq 'PUSH') 
 	{
-		pushDados($valor);
+		$maq->pushDados($valor);
+		$novoIndice = undef;
 	} 
 	elsif($code eq 'POP') 
 	{
-		popDados();
+		$maq->popDados();
+		$novoIndice = undef;
 	} 
 	elsif($code eq 'DUP')
 	{
-		pushDados(lookDados());
+		$maq->pushDados($maq->lookDados());
+		$novoIndice = undef;
 	}
 	elsif($code eq 'ADD')
 	{
 		$a = popDados();
 		$b = popDados();
-		pushDados($a + $b);
+		$maq->pushDados($a + $b);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'SUB')
 	{
 		$a = popDados();
 		$b = popDados();
-		pushDados($b - $a);	#tipo calc. posfixa
+		$maq->pushDados($b - $a);	#tipo calc. posfixa
+		$novoIndice = undef;
 	}
 	elsif($code eq 'MUL')
 	{
 		$a = popDados();
 		$b = popDados();
-		pushDados($a * $b);
+		$maq->pushDados($a * $b);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'DIV')
 	{
 		$a = popDados();
 		$b = popDados();
-		pushDados($b/$a);
+		$maq->pushDados($b/$a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'JMP')
 	{
-
+		$novoIndice = $prog->getValorHash($valor);
 	}
 	elsif($code eq 'JIT')
 	{
-
+		if($maq->lookDados())
+		{
+			$novoIndice = $prog->getValorHash($valor);
+		}
+		else
+		{
+			$novoIndice = undef;
+		}
+		
 	}
 	elsif($code eq 'JIF')
 	{
-
+		if(!$maq->lookDados())
+		{
+			$novoIndice = $prog->getValorHash($valor);
+		}
+		else
+		{
+			$novoIndice = undef;
+		}
 	}
 	elsif($code eq 'EQ')
 	{
-
+		$a = popDados();
+		$b = popDados();
+		$maq->pushDados($b == $a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'GT')
 	{
-
+		$a = popDados();
+		$b = popDados();
+		$maq->pushDados($b > $a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'GE')
 	{
-
+		$a = popDados();
+		$b = popDados();
+		$maq->pushDados($b >= $a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'LT')
 	{
-
+		$a = popDados();
+		$b = popDados();
+		$maq->pushDados($b < $a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'LE')
 	{
-
+		$a = popDados();
+		$b = popDados();
+		$maq->pushDados($b <= $a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'NE')
 	{
-
+		$a = popDados();
+		$b = popDados();
+		$maq->pushDados($b != $a);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'STO')
 	{
-
+		my $dado = popDados();
+		$maq->setMem($dado, $valor);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'RCL')
 	{
-
+		my $dado = $maq->getMem($valor);
+		$maq->pushDados($dado);
+		$novoIndice = undef;
 	}
 	elsif($code eq 'END')
 	{
-
+		$novoIndice = $prog->getPosi()-1;
 	}
 	elsif($code eq 'PRN')
 	{
-
+		print "popDados()\n";
 	}
 	else 
 	{
 		print "Syntax error\n";
+		$novoIndice = $prog->getPosi()-1;
+		# O programa encerra;
 	}
+	return $novoIndice;
 }
 
 1;
