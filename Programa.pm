@@ -13,10 +13,10 @@ sub novo
   bless $self, $class;
   return $self;
 }
-
+#peniss
 sub interpretaLinha
 {
-  #Pega argumentos
+  #Pega argumentos 
   my $self = shift;
   my $linha = shift;
 
