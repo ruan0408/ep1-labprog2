@@ -20,21 +20,33 @@ sub interpretaLinha
   my $self = shift;
   my $linha = shift;
 
-  print "Linha $self->{posi}: $linha  || \n";
+  print "Linha $self->{posi}: $linha  ||";
 
   #$linha =~ s/\#.*//; #Elimina comentários
 
-  if($linha !~ /([a-zA-Z]+[a-zA-Z0-9]*\:)?(([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z])/)
+
+  if($linha !~ /([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*(([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z])/)
   #if(!/([a-zA-Z]+:)?(([a-zA-Z])+([0-9]+|[a-zA-Z]+)?)?/)
-    {print "Syntax error\n"}
+    {
+      print "Syntax error\n"
+    }
   else
   {
+    
     if($1)
     {
+      
+      
       my $rotulo = $1;
-      chop($rotulo);#tirando':'
 
-      print "ACHEI ROTULO\n";
+     # $rotulo =~ s/[\:\s]*//;
+
+     chop ($rotulo);
+
+
+      print "|1 => $rotulo|\n";
+
+      print "ACHEI LABEL\n";
       
       if(!$self->existeLabel($rotulo))
       {
@@ -46,16 +58,18 @@ sub interpretaLinha
         return 0; #fail
       } 
 
-      print "Label :";#. $rotulo ."\n";
+      print "Label :$rotulo &\n";
     }
 
     if($2)
     {
+      print "2 => $2\n";
       $cmd = novo Comando($3, $4);
     }
 
     if($3)
     {
+      print "3 => $3\n";
       $cmd = novo Comando($5, undef);
     }
     $self->insereComando($cmd); 
@@ -72,7 +86,7 @@ sub insereComando
   $vetor = $self->{vetor};
   push(@$vetor,shift);
 
-  return $self
+  return $self;
 }
 
 sub existeLabel
@@ -112,7 +126,7 @@ sub getCmd
 sub getValorHash
 {
   (my $self, my $keyPossible) = (@_);
-  return $self->{label}{$keyPossible};
+  return $self->{label}{$keyPossible}; #kim Possible
   #tenho duvidas se caso nao existir,
   #ele retorna undef, ou nao retorna nada e cria com valor undef
 }
