@@ -4,7 +4,8 @@ package Comando;
 sub novo
 {
   my $class = shift;
-  my $self = {
+  my $self = 
+  {
     opcode => shift,
     valor => shift,
   };
@@ -15,6 +16,7 @@ sub novo
 sub getCode
 {
 	my $self = shift;
+  #print "$$self{opcode}\n";
 	return $self->{opcode};
 }
 

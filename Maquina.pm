@@ -16,34 +16,39 @@ sub novo
 sub pushDados #tira o topo da pilha de dados
 {
 	(my $maq, my $valor) = (@_);
-	push($$maq->{dados}, $valor);
+	my $vetor = $maq->{dados};
+	push(@$vetor, $valor);
 	return 1;#poderiamos verificar se deu tudo certo
 }
 
 sub popDados #tira o topo da pilha de dados
 {
 	(my $maq) = (@_);
-	return pop($$maq->{dados});
+	my $vetor = $maq->{dados};
+	return pop(@$vetor);
 }
 
 sub lookDados #consulta o topo da pilha de dados
 {
 	(my $maq) = (@_);
-	my $tam = scalar $$maq->{dados};
-	return $$maq->{dados}[$tam-1];
+	my $vetor = $maq->{dados};
+	my $tam = scalar @$vetor;
+	return $$vetor[$tam-1];#################################################
 }
 
 sub setMem 
 {
 	(my $maq, my $dado, my $i) = (@_);
-	$maq->{mem}[$i] = $dado;
+	my $vetor = $maq->{mem};
+	$vetor->[$i] = $dado;
 	return $maq;#recomendado?
 }
 
 sub getMem 
 {
 	(my $maq, my $i) = (@_);
-	return $maq->{mem}[$i];
+	my $vetor = $maq->{mem};
+	return $vetor->[$i];
 }
 
 sub executa
@@ -51,8 +56,11 @@ sub executa
 	(my $maq, my $prog) = (@_);
 	my $ind;
 	for (my $i = 0; $i < $prog->getTam(); $i++)#vai até o numero de comandos no vetor 
-	{
-		$cmd = $prog->getCmd($i);#pega comando posiçao i
+	{	
+		print "bla\n";# perceba que o progrma só passa por aqui uma vez
+		my $cmd = $prog->getCmd($i);#pega comando posiçao i
+		#my $a = $cmd->getCode();
+		#print "$a ";
 		$ind = $maq->executaCmd($prog, $cmd);#executa comando.passa prog por causa dos labels.
 		if($ind != undef){$i = $ind;}#retorna posição do jump, continua normalmente se for undef
 	}
@@ -62,7 +70,7 @@ sub executa
 sub executaCmd#funcao bolada que vai terminar o ep
 {
 	(my $maq, my $prog, my $cmd) = (@_);
-	my $code = uc($cmd->getCode);
+	my $code = uc($cmd->getCode());
 	my $valor = $cmd->getValor;# permitiremos ROTULO e rotulo, serem labels diferentes?
 	my $a, my $b;
 	my $novoIndice;
@@ -201,7 +209,8 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	}
 	else 
 	{
-		print "Syntax error\n";
+		print "Syntax error2\n";
+		print "$code";
 		$novoIndice = $prog->getTam()-1;
 		# O programa encerra;
 	}
