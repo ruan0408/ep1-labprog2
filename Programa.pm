@@ -8,7 +8,7 @@ sub novo
   {
     label => {},
     vetor =>  [],
-    posi => 0,
+    #posi => 0,
   };
   bless $self, $class;
   return $self;
@@ -20,23 +20,18 @@ sub interpretaLinha
   my $self = shift;
   my $linha = shift;
 
-  print "Linha $self->{posi}: $linha  ||";
+  #print "Linha $self->{posi}: $linha  ||";
 
   #$linha =~ s/\#.*//; #Elimina comentários
 
-
   if($linha !~ /([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*(([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z])/)
-  #if(!/([a-zA-Z]+:)?(([a-zA-Z])+([0-9]+|[a-zA-Z]+)?)?/)
-    {
-      print "Syntax error\n"
-    }
+  {
+    print "Syntax error\n"
+  }
   else
   {
-    
     if($1)
     {
-      
-      
       my $rotulo = $1;
 
      # $rotulo =~ s/[\:\s]*//;
@@ -44,17 +39,17 @@ sub interpretaLinha
      chop ($rotulo);
 
 
-      print "|1 => $rotulo|\n";
+     print "|1 => $rotulo|\n";
 
-      print "ACHEI LABEL\n";
-      
-      if(!$self->existeLabel($rotulo))
-      {
-        $self->novoLabel($rotulo);
-      }
-      else
-      {
-        print "Redefinição de label.";
+     print "ACHEI LABEL\n";
+
+     if(!$self->existeLabel($rotulo))
+     {
+      $self->novoLabel($rotulo);
+    }
+    else
+    {
+      print "Redefinição de label.";
         return 0; #fail
       } 
 
@@ -81,7 +76,7 @@ sub interpretaLinha
 sub insereComando
 {
   $self = shift;
-  $self->{posi}++;
+  #$self->{posi}++;
   #$self->{posi} = $self->{posi}+1;
   $vetor = $self->{vetor};
   push(@$vetor,shift);
@@ -110,16 +105,16 @@ sub novoLabel
   return $self;
 }
 
-sub getPosi
+sub getTam
 {
   my $self = shift;
-  return $$self{posi};
+  return scalar $self->{vetor};
 }
 
 sub getCmd
 {
   (my $self, my $ind) = (@_);
-  return $$self{vetor}[$ind];
+  return $self->{vetor}[$ind];
 }
 
 sub getValorHash

@@ -50,11 +50,11 @@ sub executa
 {
 	(my $maq, my $prog) = (@_);
 	my $ind;
-	for (my $i = 0; $i < $prog->getPosi; $i++)#vai até o numero de comandos no vetor 
+	for (my $i = 0; $i < $prog->getTam(); $i++)#vai até o numero de comandos no vetor 
 	{
 		$cmd = $prog->getCmd($i);#pega comando posiçao i
 		$ind = $maq->executaCmd($prog, $cmd);#executa comando.passa prog por causa dos labels.
-		if($ind != undef){$i = $ind};#retorna posição do jump, continua normalmente se for undef
+		if($ind != undef){$i = $ind;}#retorna posição do jump, continua normalmente se for undef
 	}
 	print "GGWP GLHF CQD\n";#homenagem ao pc
 }
@@ -193,7 +193,7 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	}
 	elsif($code eq 'END')
 	{
-		$novoIndice = $prog->getPosi()-1;
+		$novoIndice = $prog->getTam()-1;
 	}
 	elsif($code eq 'PRN')
 	{
@@ -202,7 +202,7 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	else 
 	{
 		print "Syntax error\n";
-		$novoIndice = $prog->getPosi()-1;
+		$novoIndice = $prog->getTam()-1;
 		# O programa encerra;
 	}
 	return $novoIndice;
