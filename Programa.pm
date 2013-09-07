@@ -95,8 +95,7 @@ sub existeLabel
 
   my $labelsHash = $self->{label};
 
-  return 1 if($labelsHash->{$label} != undef );
-  return 0;
+  return exists $labelsHash->{($label)};
 }
 
 sub novoLabel
