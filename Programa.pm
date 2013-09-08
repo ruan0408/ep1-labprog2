@@ -30,15 +30,15 @@ sub interpretaLinha
 		{
 			print "HUE\n";
 			my $rotulo = $1;
-		 	chop ($rotulo);
+			chop ($rotulo);
 
-		 	if(!$self->existeLabel($rotulo))
-		 	{
-		 		$self->novoLabel($rotulo);
-		 	}
-		 else
-		 {
-		 		print "Redefinição de label.";
+			if(!$self->existeLabel($rotulo))
+			{
+				$self->novoLabel($rotulo);
+			}
+			else
+			{
+				print "Redefinição de label.";
 				return 0; #fail
 			} 
 		}
