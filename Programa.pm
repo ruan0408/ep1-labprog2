@@ -20,7 +20,7 @@ sub interpretaLinha
 	my $self = shift;
 	my $linha = shift;
 
-	if($linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*(([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+)/)
+	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))/ )
 	{
 		print "Syntax error\n";
 	}
@@ -28,6 +28,7 @@ sub interpretaLinha
 	{
 		if($1)
 		{
+			print "HUE\n";
 			my $rotulo = $1;
 		 	chop ($rotulo);
 
@@ -41,17 +42,22 @@ sub interpretaLinha
 				return 0; #fail
 			} 
 		}
-		if($2)
-		{
-			print "$3 || $4\n";
-			my $cmd = novo Comando($3, $4);
-			$self->insereComando($cmd); 
-		}
-		if($5)
-		{
-			my $cmd = novo Comando($5, undef);
-			$self->insereComando($cmd); 
-		}
+	#	if($2)
+	#	{
+			if($3)
+			{
+				print "$4 || $5\n";
+				my $cmd = novo Comando($4, $5);
+				$self->insereComando($cmd);
+			} 
+			
+			if($6)
+			{
+				print "BLA \n";
+				my $cmd = novo Comando($6, undef);
+				$self->insereComando($cmd); 
+			}
+	#	}
 	}
 	return $self; #Recomendado.
 }
