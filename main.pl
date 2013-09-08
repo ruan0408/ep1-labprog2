@@ -18,7 +18,7 @@ while(<>)
 	#prog->label{shift @linha} = $i++; #sintaxe provavelmente errada
 	#$$prog{label}{shift @linha} = $i++;
 }
-$maq->executa($prog);
+#$maq->executa($prog);
 #if () {
 	# body...
 #} else {
