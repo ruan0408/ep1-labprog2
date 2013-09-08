@@ -35,7 +35,16 @@ sub lookDados #consulta o topo da pilha de dados
 	my $tam = scalar @$vetor;
 	return $$vetor[$tam-1];#################################################
 }
-
+sub printDados 
+{
+	my $maq = shift;
+	my $vetor = $maq->{dados};
+	my $tam = scalar @$vetor;
+	for (my $i = 0; $i < tam; $i++) 
+	{
+		print "$$vetor[i]\n";
+	}
+}
 sub setMem 
 {
 	(my $maq, my $dado, my $i) = (@_);
@@ -55,6 +64,8 @@ sub executa
 {
 	my ($maq, $prog) = (@_);
 	my $ind;
+	#$maq->printDados();
+	#exit(-1);
 	for (my $i = 0; $i < $prog->getTam(); $i++)#vai até o numero de comandos no vetor
 	{	
 		my $a = $prog->getTam();
@@ -67,9 +78,9 @@ sub executa
 }
 
 sub executaCmd#funcao bolada que vai terminar o ep
-{
+{print"bla\n";
 	my ($maq, $prog, $cmd) = (@_);
-	my $code = ($cmd->getCode());
+	my $code = uc($cmd->getCode());
 	my $valor = $cmd->getValor;# permitiremos ROTULO e rotulo, serem labels diferentes?
 	my ($a, $b, $novoIndice);
 	

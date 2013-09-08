@@ -29,15 +29,15 @@ sub interpretaLinha
 		if($1)
 		{
 			my $rotulo = $1;
-		 	chop ($rotulo);
+			chop ($rotulo);
 
-		 	if(!$self->existeLabel($rotulo))
-		 	{
-		 		$self->novoLabel($rotulo);
-		 	}
-		 else
-		 {
-		 		print "Redefinição de label.";
+			if(!$self->existeLabel($rotulo))
+			{
+				$self->novoLabel($rotulo);
+			}
+			else
+			{
+				print "Redefinição de label.";
 				return 0; #fail
 			} 
 		}
@@ -49,6 +49,7 @@ sub interpretaLinha
 		}
 		if($5)
 		{
+			print "$5\n";
 			my $cmd = novo Comando($5, undef);
 			$self->insereComando($cmd); 
 		}
