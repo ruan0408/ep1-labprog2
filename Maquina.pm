@@ -53,70 +53,69 @@ sub getMem
 
 sub executa
 {
-	(my $maq, my $prog) = (@_);
+	my ($maq, $prog) = (@_);
 	my $ind;
-	for (my $i = 0; $i < $prog->getTam(); $i++)#vai até o numero de comandos no vetor 
+	for (my $i = 0; $i < $prog->getTam(); $i++)#vai até o numero de comandos no vetor
 	{	
-		print "bla\n";# perceba que o progrma só passa por aqui uma vez
+		my $a = $prog->getTam();
+		#print "$a\n";
 		my $cmd = $prog->getCmd($i);#pega comando posiçao i
-		#my $a = $cmd->getCode();
-		#print "$a ";
 		$ind = $maq->executaCmd($prog, $cmd);#executa comando.passa prog por causa dos labels.
-		if($ind != undef){$i = $ind;}#retorna posição do jump, continua normalmente se for undef
+		if($ind != -1){$i = $ind;}#retorna posição do jump, continua normalmente se for -1
 	}
 	print "GGWP GLHF CQD\n";#homenagem ao pc
 }
 
 sub executaCmd#funcao bolada que vai terminar o ep
 {
-	(my $maq, my $prog, my $cmd) = (@_);
-	my $code = uc($cmd->getCode());
+	my ($maq, $prog, $cmd) = (@_);
+	my $code = ($cmd->getCode());
 	my $valor = $cmd->getValor;# permitiremos ROTULO e rotulo, serem labels diferentes?
-	my $a, my $b;
-	my $novoIndice;
-
+	my ($a, $b, $novoIndice);
+	
 	if($code eq 'PUSH') 
 	{
+		#print "auheuaheuae\n";
 		$maq->pushDados($valor);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	} 
 	elsif($code eq 'POP') 
 	{
 		$maq->popDados();
-		$novoIndice = undef;
+		$novoIndice = -1;
 	} 
 	elsif($code eq 'DUP')
 	{
 		$maq->pushDados($maq->lookDados());
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'ADD')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($a + $b);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'SUB')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b - $a);	#tipo calc. posfixa
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'MUL')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($a * $b);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'DIV')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b/$a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'JMP')
 	{
@@ -130,7 +129,7 @@ sub executaCmd#funcao bolada que vai terminar o ep
 		}
 		else
 		{
-			$novoIndice = undef;
+			$novoIndice = -1;
 		}
 		
 	}
@@ -142,7 +141,7 @@ sub executaCmd#funcao bolada que vai terminar o ep
 		}
 		else
 		{
-			$novoIndice = undef;
+			$novoIndice = -1;
 		}
 	}
 	elsif($code eq 'EQ')
@@ -150,54 +149,54 @@ sub executaCmd#funcao bolada que vai terminar o ep
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b == $a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'GT')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b > $a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'GE')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b >= $a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'LT')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b < $a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'LE')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b <= $a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'NE')
 	{
 		$a = popDados();
 		$b = popDados();
 		$maq->pushDados($b != $a);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'STO')
 	{
 		my $dado = popDados();
 		$maq->setMem($dado, $valor);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'RCL')
 	{
 		my $dado = $maq->getMem($valor);
 		$maq->pushDados($dado);
-		$novoIndice = undef;
+		$novoIndice = -1;
 	}
 	elsif($code eq 'END')
 	{
@@ -205,12 +204,13 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	}
 	elsif($code eq 'PRN')
 	{
-		print "popDados()\n";
+		$a = $maq->popDados();
+		print "$a\n";
+		$novoIndice = -1;
 	}
 	else 
 	{
 		print "Syntax error2\n";
-		print "$code";
 		$novoIndice = $prog->getTam()-1;
 		# O programa encerra;
 	}
