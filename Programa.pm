@@ -20,6 +20,8 @@ sub interpretaLinha
 	my $self = shift;
 	my $linha = shift;
 
+	$linha =~ s/#.*//;	
+
 	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))?/ )
 	{
 		print "Syntax error\n";
@@ -35,6 +37,11 @@ sub interpretaLinha
 			if(!$self->existeLabel($rotulo))
 			{
 				$self->novoLabel($rotulo);
+				if(!$2) #label em linha vazia.
+				{
+					$cmd = novo Comando(undef,undef); #Comando vazio;
+					$self->insereComando($cmd);
+				}
 			}
 			else
 			{
@@ -42,22 +49,19 @@ sub interpretaLinha
 				return 0; #fail
 			} 
 		}
-	#	if($2)
-	#	{
-			if($3)
-			{
-				print "$4 || $5\n";
-				my $cmd = novo Comando($4, $5);
-				$self->insereComando($cmd);
-			} 
-			
-			if($6)
-			{
-				print "BLA \n";
-				my $cmd = novo Comando($6, undef);
-				$self->insereComando($cmd); 
-			}
-	#	}
+		if($3)
+		{
+			print "$4 || $5\n";
+			my $cmd = novo Comando($4, $5);
+			$self->insereComando($cmd);
+		} 
+		
+		if($6)
+		{
+			print "BLA \n";
+			my $cmd = novo Comando($6, undef);
+			$self->insereComando($cmd); 
+		}
 	}
 	return $self; #Recomendado.
 }
