@@ -22,7 +22,7 @@ sub interpretaLinha
 
 	$linha =~ s/#.*//;	
 
-	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))?/ )
+	if( $linha !~ /\s*([a-zA-Z0-9]+\:)?  \s*( (([a-zA-Z]+)\s+([a-zA-Z0-9]+)) |([a-zA-Z]+) )?/x )
 	{
 		print "Syntax error\n";
 	}
