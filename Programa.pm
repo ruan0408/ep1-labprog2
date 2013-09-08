@@ -20,7 +20,7 @@ sub interpretaLinha
 	my $self = shift;
 	my $linha = shift;
 
-	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))/ )
+	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))|\s*$/ )
 	{
 		print "Syntax error\n";
 	}
