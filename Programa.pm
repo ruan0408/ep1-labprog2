@@ -8,7 +8,7 @@ sub novo
 	{
 		label => {},
 		vetor =>  [],
-		#posi => 0,
+		posi => 0,
 	};
 	bless $self, $class;
 	return $self;
@@ -20,7 +20,7 @@ sub interpretaLinha
 	my $self = shift;
 	my $linha = shift;
 
-	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))|\s*$/ )
+	if( $linha !~ /\s*([a-zA-Z]+[a-zA-Z0-9]*\:)?\s*((([a-zA-Z]+)\s+([a-zA-Z0-9]+))|([a-zA-Z]+))?/ )
 	{
 		print "Syntax error\n";
 	}
@@ -65,8 +65,7 @@ sub interpretaLinha
 sub insereComando
 {
 	$self = shift;
-	#$self->{posi}++;
-	#$self->{posi} = $self->{posi}+1;
+	$self->{posi}++;
 	$vetor = $self->{vetor};
 	push(@$vetor,shift);
 
@@ -84,10 +83,10 @@ sub existeLabel
 
 sub novoLabel
 {
-	(my $self,my $label,my $nLinha) = (@_);
+	(my $self,my $label) = (@_);
 	my $labelsHash = $self->{label};
 
-	$labelsHash->{$label} = $nLinha;
+	$labelsHash->{$label} = $self->{posi};
 
 	return $self;
 }
