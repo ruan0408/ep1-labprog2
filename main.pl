@@ -24,7 +24,7 @@ foreach $key (keys %$hashRef) #Printa label => nº do comando.
 {
 	print "Label: $key => $hashRef->{$key}\n ";
 }
-#$maq->executa($prog);
+$maq->executa($prog);
 #if () {
 	# body...
 #} else {

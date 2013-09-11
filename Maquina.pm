@@ -17,15 +17,17 @@ sub pushDados #tira o topo da pilha de dados
 {
 	(my $maq, my $valor) = (@_);
 	my $vetor = $maq->{dados};
-	push(@$vetor, $valor);
-	return 1;#poderiamos verificar se deu tudo certo
+	push @{$vetor}, $valor;
+	return $maq;#poderiamos verificar se deu tudo certo
 }
 
 sub popDados #tira o topo da pilha de dados
 {
 	(my $maq) = (@_);
 	my $vetor = $maq->{dados};
-	return pop(@$vetor);
+	my $temp = pop @{$vetor};
+	print "POPED: $temp\n";
+	return $temp;
 }
 
 sub lookDados #consulta o topo da pilha de dados
@@ -78,7 +80,8 @@ sub executa
 }
 
 sub executaCmd#funcao bolada que vai terminar o ep
-{print"bla\n";
+{
+	print"bla\n";
 	my ($maq, $prog, $cmd) = (@_);
 	my $code = uc($cmd->getCode());
 	my $valor = $cmd->getValor;# permitiremos ROTULO e rotulo, serem labels diferentes?
@@ -102,29 +105,31 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	}
 	elsif($code eq 'ADD')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
+		print "A ta cagado na soma\n" unless (defined $a);
+		print "B ta cagado na soma\n" unless (defined $b);
 		$maq->pushDados($a + $b);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'SUB')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b - $a);	#tipo calc. posfixa
 		$novoIndice = -1;
 	}
 	elsif($code eq 'MUL')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($a * $b);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'DIV')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b/$a);
 		$novoIndice = -1;
 	}
@@ -157,49 +162,49 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	}
 	elsif($code eq 'EQ')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b == $a);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'GT')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b > $a);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'GE')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b >= $a);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'LT')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b < $a);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'LE')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b <= $a);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'NE')
 	{
-		$a = popDados();
-		$b = popDados();
+		$a = $maq->popDados();
+		$b = $maq->popDados();
 		$maq->pushDados($b != $a);
 		$novoIndice = -1;
 	}
 	elsif($code eq 'STO')
 	{
-		my $dado = popDados();
+		my $dado = $maq->popDados();
 		$maq->setMem($dado, $valor);
 		$novoIndice = -1;
 	}
@@ -216,7 +221,7 @@ sub executaCmd#funcao bolada que vai terminar o ep
 	elsif($code eq 'PRN')
 	{
 		$a = $maq->popDados();
-		print "$a\n";
+		print "PRINT: $a\n";
 		$novoIndice = -1;
 	}
 	else 
@@ -225,6 +230,12 @@ sub executaCmd#funcao bolada que vai terminar o ep
 		$novoIndice = $prog->getTam()-1;
 		# O programa encerra;
 	}
+
+	$, = " - ";
+
+	print "----------PILHA ATUAL----------\n";
+	print @{$maq->{dados}};
+	print "\n------------\n";
 	return $novoIndice;
 }
 
