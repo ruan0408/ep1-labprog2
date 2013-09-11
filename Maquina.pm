@@ -42,9 +42,9 @@ sub printDados
 	my $maq = shift;
 	my $vetor = $maq->{dados};
 	my $tam = scalar @$vetor;
-	for (my $i = 0; $i < tam; $i++) 
+	for (my $i = 0; $i < $tam; $i++) 
 	{
-		print "$$vetor[i]\n";
+		print "$$vetor[$i]\n";
 	}
 }
 sub setMem 
