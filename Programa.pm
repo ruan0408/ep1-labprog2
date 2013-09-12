@@ -30,18 +30,17 @@ sub interpretaLinha
 	{
 		if($1)
 		{
-			print "HUE\n";
 			my $rotulo = $1;
-			chop ($rotulo);
+			chop ($rotulo); #tira os : do final.
 
 			if(!$self->existeLabel($rotulo))
 			{
 				$self->novoLabel($rotulo);
-				if(!$2) #label em linha vazia.
-				{
-					$cmd = novo Comando(undef,undef); #Comando vazio;
-					$self->insereComando($cmd);
-				}
+	#			if(!$2) #label em linha vazia.
+	#			{
+	#				$cmd = novo Comando(undef,undef); #Comando vazio;
+	#				$self->insereComando($cmd);
+	#			}
 			}
 			else
 			{
@@ -51,14 +50,14 @@ sub interpretaLinha
 		}
 		if($3)
 		{
-			print "$4 || $5\n";
+		#	print "$4 || $5\n";
 			my $cmd = novo Comando($4, $5);
 			$self->insereComando($cmd);
 		} 
 		
 		if($6)
 		{
-			print "BLA \n";
+	#		print "BLA \n";
 			my $cmd = novo Comando($6, undef);
 			$self->insereComando($cmd); 
 		}

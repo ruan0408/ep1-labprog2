@@ -1,3 +1,28 @@
-PUSH 2
-PRN
+		PUSH 0
+		STO 0 #Contador na posição 0 da memória
+		PUSH 1
+		STO 1 #Fatorial na posição 1
 
+
+
+hue:	RCL 0
+		PUSH 1
+		ADD		#i++
+		DUP
+		STO 0
+		RCL 1
+		MUL
+		STO 1
+
+
+		#Comparação para parar o loop
+		RCL 0
+		DUP
+		STO 0
+		PUSH 4
+		EQ
+		JIF hue
+
+		RCL 1
+		PRN 
+		END
