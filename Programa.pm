@@ -108,7 +108,7 @@ sub getCmd
 
 }
 
-sub getValorHash
+sub getLabel
 {
 	(my $self, my $keyPossible) = (@_);
 	my $labelsHash = $self->{label};

@@ -3,8 +3,8 @@
 		PUSH 1
 		STO 1 #Fatorial na posição 1
 
-
-
+foo:
+gu2:
 hue:	RCL 0
 		PUSH 1
 		ADD		#i++
