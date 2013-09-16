@@ -5,30 +5,15 @@ use Programa;
 use Maquina;
 package main;
 			
-
+#Programa principal.
+#Cada linha é interpretada e vira um comando, ao termino do while, temos um programa ($prog),
+#que será executado pela maquina ($maq);
 $prog = novo Programa;
 
 while(<>)
 {
-
 	$prog->interpretaLinha($_);
-
-
-	#@linha = split(/ :/);
-	#prog->label{shift @linha} = $i++; #sintaxe provavelmente errada
-	#$$prog{label}{shift @linha} = $i++;
 }
-#$hashRef = $prog->{label};
 
 $maq = novo Maquina($prog);
-
-#foreach $key (keys %$hashRef) #Printa label => nº do comando.
-#{
-#	print "Label: $key => $hashRef->{$key}\n ";
-#}
 $maq->executa();
-#if () {
-	# body...
-#} else {
-	# else...
-#}

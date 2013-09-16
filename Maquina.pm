@@ -3,9 +3,10 @@ package Maquina;
 
 use strict;
 
+#Construtor do objeto maquina.
+#Toda maquina tem como atributos uma pilha de dados, um vetor memória e um programa.
 sub novo
 {
-
 	my $class = shift;
 	my $prog = shift;  
 	my $self = 
@@ -17,7 +18,7 @@ sub novo
 	return bless $self, $class;
 }
 
-sub pushDados #tira o topo da pilha de dados
+sub pushDados #poe $valor no topo da pilha de dados
 {
 	(my $maq, my $valor) = (@_);
 	my $vetor = $maq->{dados};
@@ -25,7 +26,7 @@ sub pushDados #tira o topo da pilha de dados
 	return $maq;
 }
 
-sub popDados #tira o topo da pilha de dados
+sub popDados #tira e retorna o topo da pilha de dados
 {
 	(my $maq) = (@_);
 	my $vetor = $maq->{dados};
@@ -50,16 +51,8 @@ sub lookDados #consulta o topo da pilha de dados
 	my $tam = scalar @$vetor;
 	return $$vetor[$tam-1];
 }
-sub printDados 
-{
-	my $maq = shift;
-	my $vetor = $maq->{dados};
-	my $tam = scalar @$vetor;
-	for (my $i = 0; $i < $tam; $i++) 
-	{
-		print "$$vetor[$i]\n";
-	}
-}
+
+#Seta a posição $i da memoria da maquina $maq com $dado
 sub setMem 
 {
 	(my $maq, my $dado, my $i) = (@_);
@@ -68,6 +61,7 @@ sub setMem
 	return $maq;
 }
 
+#Retorna o dado da posição $i da memoria da maquina $maq
 sub getMem 
 {
 	(my $maq, my $i) = (@_);
@@ -99,7 +93,7 @@ sub jump
 
 	return $prog->getLabel($label);
 }
-
+#Executa o programa de $maq
 sub executa
 {
 	my $maq = shift;
@@ -118,6 +112,7 @@ sub executa
 
 }
 
+#Printa uma mensagem de erro que é passada por argumento
 sub callErro
 {
 	my $msg = shift;
@@ -292,13 +287,6 @@ sub executaCmd
 		$novoIndice = $prog->getTam();
 		# O programa encerra;
 	}
-
-#	$, = " - ";
-#	print "$code\n";
-#
-#	print "----------PILHA ATUAL----------\n";
-#	print @{$maq->{dados}};
-#	print "\n------------\n";
 	return $novoIndice;
 }
 
