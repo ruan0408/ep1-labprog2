@@ -1,9 +1,14 @@
 #! /usr/bin/perl -w
+
+
 package Comando;
+
+use warnings;
+use strict;
 
 #Hash criado para armazenar todos os comandos existentes na nossa linguagem.
 #O seu valor será 1 quando o comando pedir um parâmetro e 0 caso contrário.
-my %hashComandos(
+my %hashComandos = (
 	PUSH => 1,
 	POP => 0,
 	DUP => 0,
@@ -32,45 +37,61 @@ my %hashComandos(
 sub novo
 {
   my $class = shift;
+	my ($opcode, $valor) = (@_);
   my $self = 
   {
     opcode => shift,
     valor => shift,
   };
+	bless $self, $class;
+	return $self if($self->existeComando());
 	
+	return undef;
+	
+	
+}
+
+
+sub existeComando 
+{
+	my $self = shift;
+	my($opcode, $valor) = ($self->{opcode}, $self->{valor});
+
+
 	#Verificamos se o comando existe na lista de comandos.
-	if(exists $hashComandos{${$self{opcode}}}){
+	if(exists $hashComandos{$opcode}){
 		#Se ele existir, verificaremos se o comando cumpre seu formato.
 		#Caso ele peça um parâmetro, o mesmo deve existir, caso contrário a sintaxe está incorreta.
 		#O mesmo ocorre para o caso em que o comando não pede um parâmetro, se o parametro existir,
 		#a sintaxe está incorreta.
-		if($hashComandos{${$self{opcode}}} == 1){
-			if($$self{valor}) {
-				bless $self, $class;
-				return $self
+		if($hashComandos{$opcode} == 1){
+			if($valor) {
+				return 1;
 			}
 			else {
-				print "Erro de Sintaxe: O Comando ${$self{opcode}} pede um parâmetro.\n";
-				return undef;
+				print "Erro de Sintaxe: O Comando $opcode pede um parâmetro.\n";
+				return 0;
 			}
 		}
-		else if($hashComandos{${$self{opcode}}} == 0) {
-	  	if ($$self{valor}) {
-				print "Erro de Sintaxe: O Comando não pede um parâmetro.\n";
-				return undef;
+		else if($hashComandos{$opcode} == 0) {
+	  	if ($valor) {
+				print "Erro de Sintaxe: O Comando $opcode não pede um parâmetro.\n";
+				return 0;
 			} 
 			else {
-				bless $self, $class;
-				return $self;
+				
+				return 1;
 			}
 		}
 	}
 	#Caso o comando não exista, um erro é impresso.
 	else {
-		print "Erro de Sintaxe: O Comando ${$self{opcode}} não existe.\n";
-		return undef;
+		print "Erro de Sintaxe: O Comando $opcode não existe.\n";
+		return 0;
 	}
+
 }
+
 
 #Recebe um objeto comando e retorna o codigo desse objeto.
 sub getCode
