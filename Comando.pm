@@ -65,7 +65,7 @@ sub existeComando
 		#O mesmo ocorre para o caso em que o comando não pede um parâmetro, se o parametro existir,
 		#a sintaxe está incorreta.
 		if($hashComandos{$opcode} == 1){
-			if($valor) {
+			if(defined $valor) {
 				return 1;
 			}
 			else {
@@ -74,7 +74,7 @@ sub existeComando
 			}
 		}
 		elsif($hashComandos{$opcode} == 0) {
-	  	if ($valor) {
+	  	if (defined $valor) {
 				print "Erro de Sintaxe: O Comando $opcode não pede um parâmetro.\n";
 				return 0;
 			} 
