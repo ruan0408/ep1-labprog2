@@ -6,7 +6,7 @@
 \usepackage{color}
 
 \title{Relatório - EP Fase 1 \\ Laboratório de Programação 2}
-
+\author{Victor Sanches Portella \and Lucas Dário \and Ruan Costa}
 
 
 \begin{document}
@@ -49,7 +49,7 @@ Cada objeto dessa classe representa um comando, e é representado por dois atrib
 
 \item \textbf{Opcode({\color{red}Obrigatório}):} String que define a função em si. Esse código é o mesmo do que o Mnemonico usado pela definição do comando no código fonte.
 
-\item \textbf{Valor({\color{red}Opicional}):} Valor do argumento, caso exista. Se não existir, o valor desse atributo é \textbf{\color{blue}undef}. O valor, nos comandos implementados, pode ser interpretado como uma \emph{String} no caso do Jump, ou como um número nos outros casos.
+\item \textbf{Valor({\color{red}Opcional}):} Valor do argumento, caso exista. Se não existir, o valor desse atributo é \textbf{\color{blue}undef}. O valor, nos comandos implementados, pode ser interpretado como uma \emph{String} no caso do Jump, ou como um número nos outros casos.
 
 \end{itemize}
 
@@ -64,6 +64,9 @@ Essa classe representa o montador, e possui 3 atributos:
 \item \textbf{Vetor:} Possivelmente o argumento mais importante dessa classe. Esse é o vetor que representa o vetor de instruções, no nosso caso representado por objetos do tipo \textbf{\color{red}Comando}, de todas as linhas já interpretadas pelo próprio objeto.
 
 \item \textbf{Posi:} Indica a posição da próxima posição vazia no vetor. Esse atributo não seria de fato necessário, existiriam modos de fazer o programa sem ele, mas ele facilita o entendimento.
+
+
+
 
 \item \textbf{Label:} É uma tabela de hash, onde as {\color{red}chaves} são o nome do label, e os {\color{red}valores associados} são a posição no vetor para o qual esse label ``aponta''.\footnote{Isso é usado para implementar os comandos de \emph{Jump}.}
 
@@ -91,5 +94,21 @@ A classe Máquina representa a máquina virtual que irá executar o nosso códig
 Não existe implementação da pilha de chamada de função pois não foi usado e/ou implementado chamada de funções na linguagem interpretada.
 
 O principal método desse objeto é a função \textbf{\color{red}executa()}, que irá simular a execução do programa. Caso aconteça algum erro, a execução será interrompida no momento da exceção e uma mensagem de erro será exibida.
+
+
+\section{Modo de Execução}
+
+Modo de exeução do programa:
+
+\begin{verbatim}
+
+	meu_pc$>./main.pl arquivo_de_entrada
+
+\end{verbatim}
+
+Sendo que no \textbf{aquivo\_de\_entrada} se encontra o código fonte a ser executado. Caso você queira enviar os comandos através da 
+\emph{STDIN}, só omitir o nome do arquivo.
+
+
 
 \end{document}
