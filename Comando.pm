@@ -73,7 +73,7 @@ sub existeComando
 				return 0;
 			}
 		}
-		else if($hashComandos{$opcode} == 0) {
+		elsif($hashComandos{$opcode} == 0) {
 	  	if ($valor) {
 				print "Erro de Sintaxe: O Comando $opcode não pede um parâmetro.\n";
 				return 0;
