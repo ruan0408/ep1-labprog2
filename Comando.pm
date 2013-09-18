@@ -1,8 +1,34 @@
 #! /usr/bin/perl -w
 package Comando;
 
+#Hash criado para armazenar todos os comandos existentes na nossa linguagem.
+#O seu valor será 1 quando o comando pedir um parâmetro e 0 caso contrário.
+my %hashComandos(
+	PUSH => 1,
+	POP => 0,
+	DUP => 0,
+	ADD => 0,
+	SUB => 0,
+	MUL => 0,
+	DIV => 0,
+	JMP => 1,
+	JIT => 1,
+	JIF => 1,
+	EQ => 0,
+	GT => 0,
+	GE => 0, 
+	LT => 0,
+	LE => 0,
+	NE => 0,
+	STO => 1,
+	RCL => 1,
+	END => 0,
+	PRN => 0
+);
+
 #Construtor do objeto comando.
 #Todo comando de um codigo (opcode) e um valor(argumento).
+#Caso o comando não exista ou haja erro de sintaxe, a função 'novo' retorna undef.
 sub novo
 {
   my $class = shift;
@@ -11,8 +37,39 @@ sub novo
     opcode => shift,
     valor => shift,
   };
-  bless $self, $class;
-  return $self;
+	
+	#Verificamos se o comando existe na lista de comandos.
+	if(exists $hashComandos{${$self{opcode}}}){
+		#Se ele existir, verificaremos se o comando cumpre seu formato.
+		#Caso ele peça um parâmetro, o mesmo deve existir, caso contrário a sintaxe está incorreta.
+		#O mesmo ocorre para o caso em que o comando não pede um parâmetro, se o parametro existir,
+		#a sintaxe está incorreta.
+		if($hashComandos{${$self{opcode}}} == 1){
+			if($$self{valor}) {
+				bless $self, $class;
+				return $self
+			}
+			else {
+				print "Erro de Sintaxe: O Comando ${$self{opcode}} pede um parâmetro.\n";
+				return undef;
+			}
+		}
+		else if($hashComandos{${$self{opcode}}} == 0) {
+	  	if ($$self{valor}) {
+				print "Erro de Sintaxe: O Comando não pede um parâmetro.\n";
+				return undef;
+			} 
+			else {
+				bless $self, $class;
+				return $self;
+			}
+		}
+	}
+	#Caso o comando não exista, um erro é impresso.
+	else {
+		print "Erro de Sintaxe: O Comando ${$self{opcode}} não existe.\n";
+		return undef;
+	}
 }
 
 #Recebe um objeto comando e retorna o codigo desse objeto.
