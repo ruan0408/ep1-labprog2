@@ -14,6 +14,6 @@ while(<>)
 {
 	$prog->interpretaLinha($_);
 }
-
+$prog->printVetorJava();
 $maq = novo Maquina($prog);
 $maq->executa();

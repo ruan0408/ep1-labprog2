@@ -127,4 +127,31 @@ sub getLabel
 	}
 	return undef; 
 }
+
+sub printVetorJava
+{
+	my $prog = shift;
+	my $cmd;
+	for(my $i = 0; $i < $prog->getTam(); $i++)
+	{
+		$cmd = $prog->getCmd($i);
+		if($cmd->getCode() eq 'JMP' || $cmd->getCode() eq'JIF' || $cmd->getCode() eq'JIT')
+		{
+			$a = $cmd->getCode();
+			print "new Comando $a, $prog->{label}->{$cmd->getValor()}\n";
+			#print $cmd->getCode();
+		}
+		elsif($cmd->getCode() eq'PUSH' || $cmd->getCode() eq'POP' || $cmd->getCode() eq'STO' || $cmd->getCode() eq'RCL')
+		{
+			$a = $cmd->getCode();
+			$b = $cmd->getValor();
+			print "new Comando $a, $b\n";
+		}
+		else
+		{
+			$a = $cmd->getCode();
+			print "new Comando $a, null\n";	
+		}
+	}
+}
 1;
