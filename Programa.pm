@@ -29,7 +29,7 @@ sub interpretaLinha
 	$linha =~ s/#.*//;	
 
 	# Verifica o formato da sintaxe
-	if( $linha !~ /\s*([a-zA-Z0-9]+\:)?  \s*( (([a-zA-Z]+)\s+([a-zA-Z0-9]+)) |([a-zA-Z]+) )?/x)
+	if( $linha !~ /\s*([a-zA-Z0-9]+\:)? \s* ( (([a-zA-Z]+)\s+([a-zA-Z0-9]+)) |([a-zA-Z]+) )?/x)
 	{
 		print "Syntax error\n";
 	}
@@ -47,7 +47,7 @@ sub interpretaLinha
 			}
 			else
 			{
-				print "Redefinição de label.";
+				print "Redefinição da label: $rotulo\n";
 				return 0;
 			} 
 		}
@@ -55,7 +55,12 @@ sub interpretaLinha
 		{
 			#Insere novo comando (codigo, argumento)
 			my $cmd = novo Comando($4, $5);
-			$self->insereComando($cmd);
+			if (defined $cmd){
+				$self->insereComando($cmd);
+			}
+			else{
+				return 0;
+			} 
 		} 
 		
 		if($6)

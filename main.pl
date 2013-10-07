@@ -10,10 +10,18 @@ package main;
 #que será executado pela maquina ($maq);
 $prog = novo Programa;
 
+my $erro = 0;
+
 while(<>)
 {
-	$prog->interpretaLinha($_);
+	#Inperpreta linha retorna 0 caso algum erro de sintaxe 
+	#tenha sido detectado
+	$erro = 1 if(!$prog->interpretaLinha($_));
 }
-$prog->printVetorJava();
-$maq = novo Maquina($prog);
-$maq->executa();
+if(!$erro)
+{
+	$prog->printVetorJava();
+	$maq = novo Maquina($prog);
+	$maq->executa();
+}
+
